@@ -7,7 +7,7 @@ graph = {
 
 def hstar(node):
     # TODO Implement this, can just hardcode here.
-    raise NotImplementedError
+    return {'S':9, 'A':3, 'B':2, 'G':0}[node]
 def h1(node):
     return 0
 def h2(node):
@@ -20,7 +20,7 @@ def h5(node):
     return {'S':8, 'A':4, 'B':2, 'G':0}[node]
 def h_q5d(node):
     # TODO Implement this
-    raise NotImplementedError
+    return max(h3(node),h5(node))
 
 def admissible_constraint(h_val, hstar_val, **kwargs):
     return h_val <= hstar_val
@@ -46,6 +46,7 @@ def print_constraint(h_fns, constraint_fns, hstar_fn, show_violation=False):
 print_constraint([h1, h2, h3, h4, h5, h_q5d], [admissible_constraint, consistent_constraint], hstar)
 
 from collections import defaultdict
+from queue import Empty
 from priority_queue import PriorityQueue # This is the same one as in AIMA
 def astar_search(graph, h, goal_test, explored_order):
 
@@ -56,7 +57,15 @@ def astar_search(graph, h, goal_test, explored_order):
     frontier.append(node)
     explored = set()
     # TODO Implement this
-    raise NotImplementedError
+    while frontier.__len__!=0:
+        current = frontier.pop()
+        explored_order.append(current)
+        if goal_test(current): return
+        for successor, cost in graph[current]:
+            cost_fn_g[successor] += cost
+            if successor not in explored:
+                frontier.append(successor)        
+
 
 print("A*STAR - Order of the nodes that are explored.")
 explored_order = []
